@@ -1,0 +1,7 @@
+{
+  "name": "Nhà Gần - Bàn điều phối",
+  "description": "Bàn điều phối chăm nom người cao tuổi và dịch vụ hỗ trợ đời sống thường ngày",
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

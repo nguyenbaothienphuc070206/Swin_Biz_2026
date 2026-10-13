@@ -120,7 +120,7 @@ export default function AdminPage() {
         <section className="ops-section" id="ho-so" aria-labelledby="caregiver-title">
           <div className="section-title-row"><div><span className="ops-kicker">NGƯỜI Ở GẦN, HỒ SƠ RÕ RÀNG</span><h2 id="caregiver-title">Hồ sơ người chăm</h2></div><button className="text-action" onClick={() => setNotice("Danh sách đang hiển thị hồ sơ mẫu.")}>Xem danh sách <span>→</span></button></div>
           <div className="caregiver-grid">
-            {caregivers.map((person) => <CaregiverCard key={person.id} caregiver={person} docs={caregiverDocs[person.id]} />)}
+            {caregivers.map((person) => <CaregiverCard key={person.id} caregiver={person} docs={caregiverDocs[person.id]} onOpenDocs={() => setNotice("Bản xem thử: tài liệu thật chưa kết nối.")} />)}
           </div>
         </section>
 
@@ -166,9 +166,9 @@ export default function AdminPage() {
   );
 }
 
-function CaregiverCard({ caregiver, docs }: { caregiver: Caregiver; docs: { status: string; expires: string; items: string[] } }) {
+function CaregiverCard({ caregiver, docs, onOpenDocs }: { caregiver: Caregiver; docs: { status: string; expires: string; items: string[] }; onOpenDocs?: () => void }) {
   const soon = docs.status === "Sắp hết hạn";
-  return <article className="caregiver-card"><div className="caregiver-card-top"><span className="avatar avatar-caregiver">{initials(caregiver.name)}</span><span className={`verification-badge ${soon ? "badge-soon" : ""}`}><span aria-hidden="true">{soon ? "◷" : "✓"}</span>{docs.status}</span></div><h3>{caregiver.name}</h3><p className="caregiver-location">{caregiver.commune} · {caregiver.availableSlots.join(", ")}</p><div className="caregiver-rating"><strong>★ {caregiver.rating.toFixed(1)}</strong><span>·</span>{caregiver.activeCases}/{caregiver.maxCases} ca đang giữ</div><div className="doc-list">{docs.items.map((item) => <div key={item}><span aria-hidden="true">{item.startsWith("Cần") ? "!" : "✓"}</span>{item}</div>)}</div><div className={`expiry-row ${soon ? "expiry-soon" : ""}`}><span>Rà soát tiếp theo</span><strong>{docs.expires}</strong></div><button className="card-link" onClick={() => window.alert("Bản xem thử: tài liệu thật chưa kết nối.")}>Mở hồ sơ <span>→</span></button></article>;
+  return <article className="caregiver-card"><div className="caregiver-card-top"><span className="avatar avatar-caregiver">{initials(caregiver.name)}</span><span className={`verification-badge ${soon ? "badge-soon" : ""}`}><span aria-hidden="true">{soon ? "◷" : "✓"}</span>{docs.status}</span></div><h3>{caregiver.name}</h3><p className="caregiver-location">{caregiver.commune} · {caregiver.availableSlots.join(", ")}</p><div className="caregiver-rating"><strong>★ {caregiver.rating.toFixed(1)}</strong><span>·</span>{caregiver.activeCases}/{caregiver.maxCases} ca đang giữ</div><div className="doc-list">{docs.items.map((item) => <div key={item}><span aria-hidden="true">{item.startsWith("Cần") ? "!" : "✓"}</span>{item}</div>)}</div><div className={`expiry-row ${soon ? "expiry-soon" : ""}`}><span>Rà soát tiếp theo</span><strong>{docs.expires}</strong></div><button className="card-link" onClick={() => onOpenDocs ? onOpenDocs() : undefined}>Mở hồ sơ <span>→</span></button></article>;
 }
 
 function Metric({ title, value, detail, trend }: { title: string; value: string; detail: string; trend: string }) {
